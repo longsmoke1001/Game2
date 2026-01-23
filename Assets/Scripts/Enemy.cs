@@ -1,35 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
-public class Enemy : MonoBehaviour
+public class Enemy : ObjectHP
 {
-    public float health = 100f;
-    [SerializeField] Player player;
+    Player[] players=new Player[3];
+    Player target;
+
     // Start is called before the first frame update
     void Start()
     {
-        player.OnAttack += TakeDamage;
+        objectAnim = GetComponent<SPUM_Prefabs>()._anim;
+        players =FindObjectsByType<Player>(FindObjectsSortMode.None);
+        target = players[Random.Range(0, players.Length)];
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        ChaseTarget();
     }
 
-    void TakeDamage(float damage)
+    void ChaseTarget()
     {
-        health -= damage;
-        if (health <= 0f)
+        if ((target.transform.position - transform.position).magnitude < attackRange)
         {
-            Destroy(gameObject);
-            //Die();
+            if (Time.time - lastAttackTime > speed)
+            {
+                target.GetAttacked(this);
+                lastAttackTime = Time.time;
+                objectAnim.SetTrigger("2_Attack");
+                objectAnim.SetBool("1_Move", false);
+            }
+        }
+        else
+        {
+            if (Time.time - lastAttackTime < attackTimeNeeded)
+            {
+                objectAnim.SetBool("1_Move", false);
+            }
+            else
+            {
+                Vector2 movingVelocity = moveSpeed * (target.transform.position - transform.position).normalized * Time.deltaTime;
+                transform.Translate(movingVelocity);
+                objectAnim.SetBool("1_Move", true);
+                if (movingVelocity.x > 0)
+                {
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+            }
         }
     }
 
     private void OnDestroy()
     {
-        player.OnAttack -= TakeDamage;
+
     }
 }
