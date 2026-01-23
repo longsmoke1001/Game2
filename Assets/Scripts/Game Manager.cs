@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&& !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
@@ -46,7 +47,12 @@ public class GameManager : MonoBehaviour
 
         void Select(Player player)
         {
+            if (selectedCharacter != null)
+            {
+                selectedCharacter.skillButton.gameObject.SetActive(false);
+            }
             selectedCharacter = player;
+            selectedCharacter.skillButton.gameObject.SetActive(true);
             lightEffect.gameObject.SetActive(true);
         }
     }

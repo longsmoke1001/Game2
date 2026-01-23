@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : ObjectHP
 {
     public bool isSelected = false;
     public Vector2 destination;
     public Enemy target;
+    [field: SerializeField] public Button skillButton { get; private set; }
 
     // Start is called before the first frame update
     void Start()
