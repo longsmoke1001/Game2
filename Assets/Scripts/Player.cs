@@ -15,6 +15,7 @@ public class Player : ObjectHP
     // Start is called before the first frame update
     void Start()
     {
+        destination= transform.position;
         objectAnim = GetComponent<SPUM_Prefabs>()._anim;
     }
 
@@ -23,7 +24,12 @@ public class Player : ObjectHP
     {
         Debug.DrawLine(transform.position, destination, Color.green);
         //input handling
-        if (target != null)
+        if (isStunned)
+        {
+            objectAnim.SetBool("1_Move", false);
+            transform.Translate(knockBackDirection * Time.deltaTime / 0.2f);
+        }
+        else if (target != null)
             ChaseTarget();
         else
             MoveToDestination();
@@ -35,7 +41,7 @@ public class Player : ObjectHP
         {
             if (Time.time - lastAttackTime > speed)
             {
-                target.GetAttacked(this);
+                target.TakeDamage(this, 1f);
                 lastAttackTime = Time.time;
                 objectAnim.SetTrigger("2_Attack");
                 objectAnim.SetBool("1_Move", false);

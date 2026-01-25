@@ -10,8 +10,10 @@ public class ObjectHP : MonoBehaviour
     [SerializeField] protected float attackRange = 2f;
     [SerializeField] protected float attackTimeNeeded = 0.5f;
     protected float speed = 2f;
+    public bool isStunned = false;
     public float lastAttackTime { get; protected set; }
     [field: SerializeField] public float attackPower { get; protected set; } = 5f;
+    protected Vector2 knockBackDirection;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,17 +26,30 @@ public class ObjectHP : MonoBehaviour
     {
         
     }
-    public void GetAttacked(ObjectHP gameObject)
+
+    public void TakeDamage(ObjectHP source, float attackPowerRatio)
     {
-        TakeDamage(gameObject.attackPower);
-    }
-    void TakeDamage(float damage)
-    {
-        health -= damage;
+        health -= source.attackPower*attackPowerRatio;
         if (health <= 0f)
         {
             Destroy(gameObject);
-            //Die();
         }
+    }
+    public void Stunned(float stunDuration)
+    {
+        isStunned = true;
+        Invoke("RemoveStun", stunDuration);
+    }
+
+    public void KnockBacked(Vector2 direction)
+    {
+        knockBackDirection = direction;
+        isStunned = true;
+        Invoke("RemoveStun", 0.2f);
+    }
+    protected void RemoveStun()
+    {
+        isStunned = false;
+        knockBackDirection = Vector2.zero;
     }
 }
