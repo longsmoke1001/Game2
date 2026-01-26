@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] float[] attackPowerRatio= new float[4];
     [SerializeField] float[] cooldownTime = { 10, 10, 10, 10 };
     public static float[] lastCastTime = { -999, -999, -999, -999 };
+    [SerializeField] AbilityData[] abilities=new AbilityData[4];
+
 
 
 

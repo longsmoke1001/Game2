@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] ObjectHP gameObjectAttached;
+    public ObjectHP gameObjectAttached;
     Slider slider;
 
     void Start()
@@ -18,12 +18,12 @@ public class HealthBar : MonoBehaviour
     void Update()
     {
 
-        slider.value = gameObjectAttached.health / 100f;
         if (gameObjectAttached==null)
         {
             Destroy(gameObject);
             return;
         }
+        slider.value = gameObjectAttached.health / 100f;
         transform.position = Camera.main.WorldToScreenPoint(gameObjectAttached.transform.position + Vector3.up);
     }
 

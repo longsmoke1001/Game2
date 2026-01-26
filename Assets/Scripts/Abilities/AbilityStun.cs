@@ -16,6 +16,7 @@ public class AbilityStun : RangeDisplay
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyUp(KeyCode.Escape)) { Destroy(gameObject); Time.timeScale = 1f; }
         FollowMouse();
         if (Input.GetMouseButtonDown(0))
         {
