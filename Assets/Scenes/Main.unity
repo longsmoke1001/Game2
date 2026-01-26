@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b540ef8f6776f1543903460e96650b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 100
   attackRange: 4
   attackTimeNeeded: 0.5
   isStunned: 0
@@ -2634,7 +2634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b540ef8f6776f1543903460e96650b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 100
   attackRange: 2
   attackTimeNeeded: 0.5
   isStunned: 0
