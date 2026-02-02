@@ -6,10 +6,15 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] Enemy enemy;
     [SerializeField] HealthBar healthBar;
+    [SerializeField] Player[] players;
     // Start is called before the first frame update
     void Start()
     {
         SpawnEnemies(10);
+        for (int i = 0; i < players.Length; i++)
+        {
+            Instantiate(healthBar, transform).gameObjectAttached = players[i];
+        }
     }
 
     // Update is called once per frame

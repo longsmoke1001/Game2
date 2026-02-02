@@ -7,6 +7,7 @@ public class ObjectHP : MonoBehaviour
     protected float moveSpeed = 0.5f;
     protected Animator objectAnim;
     public float health = 100f;
+    public float maxHealth {get;protected set;}
     [SerializeField] protected float attackRange = 2f;
     [SerializeField] protected float attackTimeNeeded = 0.5f;
     protected float speed = 2f;
@@ -15,10 +16,13 @@ public class ObjectHP : MonoBehaviour
     [field: SerializeField] public float attackPower { get; protected set; } = 5f;
     protected Vector2 knockBackDirection;
     // Start is called before the first frame update
+    void Awake()
+    {
+        maxHealth = health;
+    }
     void Start()
     {
-        lastAttackTime = Time.time;
-        //GetDamaged += TakeDamage;
+
     }
 
     // Update is called once per frame

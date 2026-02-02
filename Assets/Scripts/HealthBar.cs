@@ -23,7 +23,7 @@ public class HealthBar : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        slider.value = gameObjectAttached.health / 100f;
+        slider.value = gameObjectAttached.health / gameObjectAttached.maxHealth;
         transform.position = Camera.main.WorldToScreenPoint(gameObjectAttached.transform.position + Vector3.up);
     }
 

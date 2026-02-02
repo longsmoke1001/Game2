@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float[] cooldownTime = { 10, 10, 10, 10 };
     public static float[] lastCastTime = { -999, -999, -999, -999 };
     [SerializeField] AbilityData[] abilities=new AbilityData[4];
+    TextMeshProUGUI playerHealth;
 
 
 
@@ -59,16 +60,15 @@ public class GameManager : MonoBehaviour
         }
         else
             SelectTarget();
-        for(int i=0;i<buttons.Length;i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
             float remainingCooldown = cooldownTime[i] - (Time.time - lastCastTime[i]);
             if (remainingCooldown > 0)
                 cooldownText[i].text = $"{remainingCooldown:F1}";
-            else 
+            else
                 cooldownText[i].text = "";
         }
-
-
+        playerHealth.text = $"{selectedCharacter.health:F0}/{selectedCharacter.maxHealth:F0}";
 
     }
 
