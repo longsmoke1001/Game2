@@ -29,5 +29,10 @@ public class RangeDisplay : ObjectHP
         transform.position = GameManager.selectedCharacter.transform.position;
     }
     
-    
+    protected void EndCast()
+    {
+        Time.timeScale = 1f;
+        GameManager.Instance.lastCastTime[GameManager.currentAbilty] = Time.time;
+        Destroy(gameObject);
+    }
 }

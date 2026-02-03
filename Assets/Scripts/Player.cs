@@ -9,7 +9,6 @@ public class Player : ObjectHP
 {
     public bool isSelected = false;
     public Vector2 destination;
-    public Enemy target;
     [field: SerializeField] public Button skillButton { get; private set; }
 
     // Start is called before the first frame update
@@ -29,47 +28,36 @@ public class Player : ObjectHP
             objectAnim.SetBool("1_Move", false);
             transform.Translate(knockBackDirection * Time.deltaTime / 0.2f);
         }
+        else if (target!=null&&target.TryGetComponent<Player>(out Player player))
+            FollowPlayer();
         else if (target != null)
             ChaseTarget();
         else
             MoveToDestination();
     }
 
-    void ChaseTarget()
+    void FollowPlayer()
     {
-        if ((target.transform.position - transform.position).magnitude < attackRange)
+        float distance = (target.transform.position - transform.position).magnitude;
+        if (distance > 1.5f||(distance >1f &&objectAnim.GetBool("1_Move")))
         {
-            if (Time.time - lastAttackTime > speed)
+            Vector2 movingVelocity = moveSpeed * (target.transform.position - transform.position).normalized * Time.deltaTime;
+            transform.Translate(movingVelocity);
+            objectAnim.SetBool("1_Move", true);
+            if (movingVelocity.x > 0)
             {
-                target.TakeDamage(this, 1f);
-                lastAttackTime = Time.time;
-                objectAnim.SetTrigger("2_Attack");
-                objectAnim.SetBool("1_Move", false);
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(1, 1, 1);
             }
         }
         else
         {
-            if (Time.time - lastAttackTime < attackTimeNeeded)
-            {
-                objectAnim.SetBool("1_Move", false);
-            }
-            else
-            {
-                Vector2 movingVelocity = moveSpeed * (target.transform.position - transform.position).normalized * Time.deltaTime;
-                transform.Translate(movingVelocity);
-                objectAnim.SetBool("1_Move", true);
-                if (movingVelocity.x > 0)
-                {
-                    transform.localScale = new Vector3(-1, 1, 1);
-                }
-                else
-                {
-                    transform.localScale = new Vector3(1, 1, 1);
-                }
-            }
+            objectAnim.SetBool("1_Move", false);
         }
     }
-
     void MoveToDestination()
     {
         if ((destination - (Vector2)transform.position).magnitude > 0.1f)

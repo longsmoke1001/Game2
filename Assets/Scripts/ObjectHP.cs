@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class ObjectHP : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class ObjectHP : MonoBehaviour
     public float lastAttackTime { get; protected set; }
     [field: SerializeField] public float attackPower { get; protected set; } = 5f;
     protected Vector2 knockBackDirection;
+    public ObjectHP target;
     // Start is called before the first frame update
     void Awake()
     {
@@ -55,5 +57,40 @@ public class ObjectHP : MonoBehaviour
     {
         isStunned = false;
         knockBackDirection = Vector2.zero;
+    }
+
+    protected void ChaseTarget()
+    {
+        if ((target.transform.position - transform.position).magnitude < attackRange)
+        {
+            if (Time.time - lastAttackTime > speed)
+            {
+                target.TakeDamage(this, 1f);
+                lastAttackTime = Time.time;
+                objectAnim.SetTrigger("2_Attack");
+                objectAnim.SetBool("1_Move", false);
+            }
+        }
+        else
+        {
+            if (Time.time - lastAttackTime < attackTimeNeeded)
+            {
+                objectAnim.SetBool("1_Move", false);
+            }
+            else
+            {
+                Vector2 movingVelocity = moveSpeed * (target.transform.position - transform.position).normalized * Time.deltaTime;
+                transform.Translate(movingVelocity);
+                objectAnim.SetBool("1_Move", true);
+                if (movingVelocity.x > 0)
+                {
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+            }
+        }
     }
 }

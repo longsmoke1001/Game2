@@ -28,9 +28,7 @@ public class AbilityCrowdControl : RangeDisplay
                     enemy.KnockBacked(Camera.main.ScreenToWorldPoint(Input.mousePosition) - enemy.transform.position);
                 }
             }
-            GameManager.lastCastTime[GameManager.currentAbilty] = Time.time;
-            Time.timeScale = 1f;
-            Destroy(gameObject);
+            EndCast();
         }
     }
 }

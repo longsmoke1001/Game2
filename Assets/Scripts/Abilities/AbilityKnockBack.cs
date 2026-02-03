@@ -28,9 +28,7 @@ public class AbilityKnockBack : RangeDisplay
                     enemy.KnockBacked((enemy.transform.position-GameManager.selectedCharacter.transform.position).normalized*3);
                 }
             }
-            Time.timeScale = 1f;
-            GameManager.lastCastTime[GameManager.currentAbilty] = Time.time;
-            Destroy(gameObject);
+            EndCast();
         }
     }
 }

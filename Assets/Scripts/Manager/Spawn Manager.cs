@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpawnEnemies(10);
+        SpawnEnemies(3);
         for (int i = 0; i < players.Length; i++)
         {
             Instantiate(healthBar, transform).gameObjectAttached = players[i];
@@ -20,8 +20,8 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<Enemy>() == null)
-            SpawnEnemies(10);
+        //if (FindObjectOfType<Enemy>() == null)
+        //    SpawnEnemies(10);
 
     }
 

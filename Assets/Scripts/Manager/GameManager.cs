@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
     public static Player selectedCharacter { get; private set; }
     [SerializeField] LightEffect lightEffect;
     [SerializeField] GameObject abilityRangeCircle;
@@ -17,13 +18,24 @@ public class GameManager : MonoBehaviour
     bool isCasting = false;
     public static int currentAbilty { get; private set; } = -1;
     [SerializeField] float[] attackPowerRatio= new float[4];
-    [SerializeField] float[] cooldownTime = { 10, 10, 10, 10 };
-    public static float[] lastCastTime = { -999, -999, -999, -999 };
+    [field:SerializeField] public float[] cooldownTime { get; private set; } = { 10, 10, 10, 10 };
+    [field:SerializeField] public float[] lastCastTime { get; private set; } = { -999, -999, -999, -999 };
     [SerializeField] AbilityData[] abilities=new AbilityData[4];
-    TextMeshProUGUI playerHealth;
+    [SerializeField] Player[] players;
 
 
-
+    void Awake()
+    {
+        // 如果已經有 Instance，且不是自己，銷毀重複的物件
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        // 若你希望在場景切換時保留 GameManager，取消註解下一行
+        DontDestroyOnLoad(gameObject);
+    }
 
     void CastAbility(int id)
     {
@@ -60,16 +72,6 @@ public class GameManager : MonoBehaviour
         }
         else
             SelectTarget();
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            float remainingCooldown = cooldownTime[i] - (Time.time - lastCastTime[i]);
-            if (remainingCooldown > 0)
-                cooldownText[i].text = $"{remainingCooldown:F1}";
-            else
-                cooldownText[i].text = "";
-        }
-        playerHealth.text = $"{selectedCharacter.health:F0}/{selectedCharacter.maxHealth:F0}";
-
     }
 
     void Select(Player player)
@@ -81,6 +83,11 @@ public class GameManager : MonoBehaviour
         selectedCharacter = player;
         selectedCharacter.skillButton.gameObject.SetActive(true);
         lightEffect.gameObject.SetActive(true);
+    }
+
+    public void FollowAnotherPlayer()
+    {
+        selectedCharacter.target = players[selectedCharacter == players[0] ? 1 : 0];
     }
     void SelectTarget()
     {

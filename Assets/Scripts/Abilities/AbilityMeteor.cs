@@ -26,9 +26,7 @@ public class AbilityMeteor : RangeDisplay
                     enemy.TakeDamage(this, 7);
                 }
             }
-            Time.timeScale = 1f;
-            GameManager.lastCastTime[GameManager.currentAbilty] = Time.time;
-            Destroy(gameObject);
+            EndCast();
         }
     }
 }

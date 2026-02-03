@@ -33,9 +33,7 @@ public class AbilityStun : RangeDisplay
             distanceFromPlayerToLocation = transform.position - player.transform.position;
             player.Stunned(0.2f);
             player.KnockBacked(distanceFromPlayerToLocation);
-            GameManager.lastCastTime[GameManager.currentAbilty] = Time.time;
-            Time.timeScale = 1f;
-            Destroy(gameObject);
+            EndCast();
         }
     }
 
